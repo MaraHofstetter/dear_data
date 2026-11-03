@@ -47,62 +47,144 @@ void draw(){
   
   
   
+  
+  
+  
 }
 
 //-------------------------------------------------------setup holds--------------------------------------------
 void setup_holds(ArrayList<DataRow> data) {
   
-  int next_x_week_1 = 10;
-  int next_y_week_1 = 10;
-  int next_x_week_2 = 210;
-  int next_y_week_2 = 10;
-  int next_x_week_3 = 410;
-  int next_y_week_3 = 10;
+  int next_x_week_1 = 1600;
+  int next_y_week_1 = 1000;
+  int next_x_week_2 = 20;
+  int next_y_week_2 = 960;
+  int next_x_week_3 = 25;
+  int next_y_week_3 = 850;
+  int counter_w_1 = 1;
+  int counter_w_2 = 1;
+  int counter_w_3 = 1;
+  int current_x_w_1 = 0;
+  int current_y_w_1 = 0;
+  int current_x_w_2 = 0;
+  int current_y_w_2 = 0;
+  int current_x_w_3 = 0;
+  int current_y_w_3 = 0;
+  int current_grade;
   
   
   for (int i = 0; i < data.size(); i++){
     float r = random(1.1,6.9);
     int type_hold = int(r);
     if (data.get(i).get_week() == 1) {
-      int current_x = next_x_week_1;
-      int current_y = next_y_week_1;
-      next_x_week_1 += 50;
-      next_y_week_1 += 50;
-      
-      int current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       println("test");
+       current_x_w_1 = next_x_week_1;
+       current_y_w_1 = next_y_week_1;
+    
+      if (counter_w_1 == 10){
+        next_y_week_1 -= 100;
+        next_x_week_1 = 1580;
+        counter_w_1 += 1;
+      } else if (counter_w_1 == 16){
+        next_y_week_1 -= 100;
+        next_x_week_1 = 1600;
+        counter_w_1 += 1; 
+      } else if (counter_w_1 == 19){
+        next_y_week_1 -= 100;
+        next_x_week_1 = 1570;
+        counter_w_1 += 1; 
+      } else {
+        next_x_week_1 -= 70;
+        counter_w_1 += 1;
+      }
+      current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (current_grade == 0) {
-        current_grade = 1;}
-      
-      HoldsSpecs current_hold = new HoldsSpecs(type_hold, current_x, current_y, current_grade, data.get(i).get_nb_attempts());
-      holds_specs.add(current_hold);
+        current_grade = 1;
       }
       
+      HoldsSpecs current_hold_w_1 = new HoldsSpecs(type_hold, current_x_w_1, current_y_w_1, current_grade, data.get(i).get_nb_attempts());
+      holds_specs.add(current_hold_w_1);
+    }
+    
+      
+    
+    
     if (data.get(i).get_week() == 2) {
-      int current_x = next_x_week_2;
-      int current_y = next_y_week_2;
-      next_x_week_2 += 50;
-      next_y_week_2 += 50; 
+      current_x_w_2 = next_x_week_2;
+      current_y_w_2 = next_y_week_2;
+      if (counter_w_2 == 4){
+        next_x_week_2 = 600;
+        next_y_week_2 -= 110; 
+        counter_w_2 += 1;
+      }else if (counter_w_2 == 7){
+        next_x_week_2 = 1000;
+        next_y_week_2 -= 130;
+        counter_w_2 += 1;
+    }else if (counter_w_2 == 9){
+        next_x_week_2 = 1200;
+        next_y_week_2 -= 250;
+        counter_w_2 += 1;
+    }else if (counter_w_2 == 12){
+        next_x_week_2 = 800 ;
+        next_y_week_2 = 450;
+        counter_w_2 += 1;
+    }else if (counter_w_2 == 13){
+      next_x_week_2 = 10;
+      next_y_week_2 = 430;
+      counter_w_2 += 1; 
+    }else if (counter_w_2 > 13){
+        next_x_week_2 += 170;
+        next_y_week_2 -= 60;
+        counter_w_2 += 1;
+    }else{
+      next_x_week_2 +=170;
+      counter_w_2 += 1;
+    }
       
-      int current_grade = data.get(i).get_grade();                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      current_grade = data.get(i).get_grade();                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (current_grade == 0) {
-        current_grade = 1;}
+        current_grade = 1;
+      }
       
-      HoldsSpecs current_hold = new HoldsSpecs(type_hold, current_x, current_y,current_grade, data.get(i).get_nb_attempts());
-      holds_specs.add(current_hold);
+      HoldsSpecs current_hold_w_2 = new HoldsSpecs(type_hold, current_x_w_2, current_y_w_2,current_grade, data.get(i).get_nb_attempts());
+      holds_specs.add(current_hold_w_2);
       }
       
     if (data.get(i).get_week() == 3) {
-      int current_x = next_x_week_3;
-      int current_y = next_y_week_3;
-      next_x_week_3 += 50;
-      next_y_week_3 += 50;
+      current_x_w_3 = next_x_week_3;
+      current_y_w_3 = next_y_week_3;
+      if (counter_w_3 == 7){
+        next_x_week_3 = 2;
+        next_y_week_3 += 60; 
+        counter_w_3 += 1;
+      }else if (counter_w_3 == 14){
+        next_x_week_3 = 2;
+        next_y_week_3 = 680;
+        counter_w_3 += 1;
+      }else if (counter_w_3 == 19){
+        next_x_week_3 = 525;
+        next_y_week_3 = 485;
+        counter_w_3 += 1;
+      }else if (counter_w_3 > 14 && counter_w_3 < 19){
+        next_x_week_3 +=150;
+        next_y_week_3 -= 40;
+        counter_w_3 += 1; 
+      }else{
+        next_x_week_3 +=120;
+        next_y_week_3 -= 23;
+        counter_w_3 += 1; 
+      }
       
-      int current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      
+      
+      
+      current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       if (current_grade == 0) {
-        current_grade = 1;}
+        current_grade = 1;
+      }
       
-      HoldsSpecs current_hold = new HoldsSpecs(type_hold, current_x, current_y, current_grade, data.get(i).get_nb_attempts());
-      holds_specs.add(current_hold);
+      HoldsSpecs current_hold_w_3 = new HoldsSpecs(type_hold, current_x_w_3, current_y_w_3, current_grade, data.get(i).get_nb_attempts());
+      holds_specs.add(current_hold_w_3);
     }       
   }
   
