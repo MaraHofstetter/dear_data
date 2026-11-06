@@ -55,12 +55,12 @@ void draw(){
 //-------------------------------------------------------setup holds--------------------------------------------
 void setup_holds(ArrayList<DataRow> data) {
   
-  int next_x_week_1 = 1600;
+  int next_x_week_1 = 1615;
   int next_y_week_1 = 1000;
   int next_x_week_2 = 20;
-  int next_y_week_2 = 960;
-  int next_x_week_3 = 25;
-  int next_y_week_3 = 850;
+  int next_y_week_2 = 1020;
+  int next_x_week_3 = 10;
+  int next_y_week_3 = 880;
   int counter_w_1 = 1;
   int counter_w_2 = 1;
   int counter_w_3 = 1;
@@ -81,20 +81,20 @@ void setup_holds(ArrayList<DataRow> data) {
        current_x_w_1 = next_x_week_1;
        current_y_w_1 = next_y_week_1;
     
-      if (counter_w_1 == 10){
+      if (counter_w_1 == 9){
         next_y_week_1 -= 100;
         next_x_week_1 = 1580;
         counter_w_1 += 1;
-      } else if (counter_w_1 == 16){
+      } else if (counter_w_1 == 15){
         next_y_week_1 -= 100;
         next_x_week_1 = 1600;
         counter_w_1 += 1; 
-      } else if (counter_w_1 == 19){
+      } else if (counter_w_1 == 18){
         next_y_week_1 -= 100;
-        next_x_week_1 = 1570;
+        next_x_week_1 = 1600;
         counter_w_1 += 1; 
       } else {
-        next_x_week_1 -= 70;
+        next_x_week_1 -= 100;
         counter_w_1 += 1;
       }
       current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -113,28 +113,36 @@ void setup_holds(ArrayList<DataRow> data) {
       current_x_w_2 = next_x_week_2;
       current_y_w_2 = next_y_week_2;
       if (counter_w_2 == 4){
-        next_x_week_2 = 600;
-        next_y_week_2 -= 110; 
+        next_x_week_2 = 650;
+        next_y_week_2 = 940; 
         counter_w_2 += 1;
-      }else if (counter_w_2 == 7){
-        next_x_week_2 = 1000;
-        next_y_week_2 -= 130;
+      }else if (counter_w_2 == 5){
+        next_x_week_2 = 980;
+        next_y_week_2 = 780;
         counter_w_2 += 1;
-    }else if (counter_w_2 == 9){
-        next_x_week_2 = 1200;
-        next_y_week_2 -= 250;
+     }else if (counter_w_2 < 10 && counter_w_2 > 5 ){
+        next_x_week_2 += 150;
+        next_y_week_2 -= 75;
         counter_w_2 += 1;
-    }else if (counter_w_2 == 12){
+    }else if (counter_w_2 == 2){
+        next_x_week_2 = 350;
+        next_y_week_2 = 970;
+        counter_w_2 += 1;
+    }else if (counter_w_2 == 10){
+        next_x_week_2 = 1150;
+        next_y_week_2 = 560;
+        counter_w_2 += 1;
+    }else if (counter_w_2 == 11){
         next_x_week_2 = 800 ;
         next_y_week_2 = 450;
         counter_w_2 += 1;
-    }else if (counter_w_2 == 13){
-      next_x_week_2 = 10;
-      next_y_week_2 = 430;
+    }else if (counter_w_2 == 12){
+      next_x_week_2 = -3;
+      next_y_week_2 = 450;
       counter_w_2 += 1; 
-    }else if (counter_w_2 > 13){
+    }else if (counter_w_2 > 12){
         next_x_week_2 += 170;
-        next_y_week_2 -= 60;
+        next_y_week_2 -= 70;
         counter_w_2 += 1;
     }else{
       next_x_week_2 +=170;
@@ -153,25 +161,25 @@ void setup_holds(ArrayList<DataRow> data) {
     if (data.get(i).get_week() == 3) {
       current_x_w_3 = next_x_week_3;
       current_y_w_3 = next_y_week_3;
-      if (counter_w_3 == 7){
-        next_x_week_3 = 2;
-        next_y_week_3 += 60; 
+      if (counter_w_3 == 8){
+        next_x_week_3 = 5;
+        next_y_week_3 += 40; 
         counter_w_3 += 1;
-      }else if (counter_w_3 == 14){
+      }else if (counter_w_3 == 15){
         next_x_week_3 = 2;
-        next_y_week_3 = 680;
+        next_y_week_3 = 650;
         counter_w_3 += 1;
       }else if (counter_w_3 == 19){
         next_x_week_3 = 525;
-        next_y_week_3 = 485;
+        next_y_week_3 = 450;
         counter_w_3 += 1;
-      }else if (counter_w_3 > 14 && counter_w_3 < 19){
+      }else if (counter_w_3 > 15 && counter_w_3 < 19){
         next_x_week_3 +=150;
         next_y_week_3 -= 40;
         counter_w_3 += 1; 
       }else{
         next_x_week_3 +=120;
-        next_y_week_3 -= 23;
+        next_y_week_3 -= 25;
         counter_w_3 += 1; 
       }
       
@@ -277,13 +285,13 @@ void draw_background(){
   stroke(shadow_grey);
   
   //top left volume
-  triangle(0,0,0,380,1100,0);
+  triangle(0,0,0,450,1100,0);
   
   //top right volume 
-  quad(802,402,1000,470,2000,300,2000,100);
+  quad(802,402,1120,540,2000,350,2000,100);
   
   //bottom left volume
-  quad(1095,664, 950, 800,0, 1010, 0, 900);
+  quad(1095,664, 950, 840,0, 1050, 0, 900);
   
   //---light portions volumes on wall-----------
   
@@ -293,13 +301,13 @@ void draw_background(){
   strokeWeight(3);
   
   //top right volume
-  quad(1700,-10,1000,250,800,400,2000,100);
+  quad(1700,-10,1000,200,800,400,2000,100);
   
   //bottom left volume
-  quad(0,700,600,500,1100,660,0,900);
+  quad(0,650,600,450,1100,660,0,900);
   
   //bottom right volume 
-  triangle(800,1115,1800,800, 2000,1700);
+  triangle(650,1115,1800,600, 2000,1700);
   
   //-----------------text------------------------------
   fill(text);
