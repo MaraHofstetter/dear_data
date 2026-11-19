@@ -1,4 +1,6 @@
 import java.util.Comparator;
+import java.util.Collections;
+
 
 //---------------------------------------------declearing----------------------------
 color shadow_grey = color(112,114,100);
@@ -72,10 +74,13 @@ void setup_holds(ArrayList<DataRow> data) {
   int current_y_w_3 = 0;
   int current_grade;
   
+  Collections.shuffle(data.subList(0,20));
+  
   
   for (int i = 0; i < data.size(); i++){
     float r = random(1.1,6.9);
     int type_hold = int(r);
+    float angle = random(360);
     if (data.get(i).get_week() == 1) {
        println("test");
        current_x_w_1 = next_x_week_1;
@@ -101,8 +106,8 @@ void setup_holds(ArrayList<DataRow> data) {
       if (current_grade == 0) {
         current_grade = 1;
       }
-      
-      HoldsSpecs current_hold_w_1 = new HoldsSpecs(type_hold, current_x_w_1, current_y_w_1, current_grade, data.get(i).get_nb_attempts());
+     
+      HoldsSpecs current_hold_w_1 = new HoldsSpecs(type_hold, current_x_w_1, current_y_w_1, current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_1);
     }
     
@@ -154,7 +159,7 @@ void setup_holds(ArrayList<DataRow> data) {
         current_grade = 1;
       }
       
-      HoldsSpecs current_hold_w_2 = new HoldsSpecs(type_hold, current_x_w_2, current_y_w_2,current_grade, data.get(i).get_nb_attempts());
+      HoldsSpecs current_hold_w_2 = new HoldsSpecs(type_hold, current_x_w_2, current_y_w_2,current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_2);
       }
       
@@ -191,10 +196,11 @@ void setup_holds(ArrayList<DataRow> data) {
         current_grade = 1;
       }
       
-      HoldsSpecs current_hold_w_3 = new HoldsSpecs(type_hold, current_x_w_3, current_y_w_3, current_grade, data.get(i).get_nb_attempts());
+      HoldsSpecs current_hold_w_3 = new HoldsSpecs(type_hold, current_x_w_3, current_y_w_3, current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_3);
     }       
   }
+  
   
 }
 
@@ -207,23 +213,30 @@ void draw_holds(ArrayList<HoldsSpecs>holds_specs){
  
   
   
+  
   for (int i = 0; i < holds_specs.size(); i++){
     int current_type = holds_specs.get(i).get_type_hold();
     int current_x_position = holds_specs.get(i).get_x_position();
     int current_y_position = holds_specs.get(i).get_y_position();
     int current_colour = holds_specs.get(i).get_colour();
     int current_chalk_level = holds_specs.get(i).get_chalk_level();
+    float angle = holds_specs.get(i).get_angle();
     
     PImage img = loadImage(current_colour + "_" + current_type + "_" + current_chalk_level + ".png");
     
-    image(img, current_x_position, current_y_position);
+    pushMatrix();
+    translate(current_x_position + 65, current_y_position + 70);
+    rotate(radians(angle));
+    imageMode(CENTER);
+    
+    
+    image(img, 0, 0, 100, 100);
+    popMatrix();
     
     
     
   }
 }
-
-
 
 
   
@@ -241,7 +254,8 @@ void sort_raw_data(String [] raw_data_climbs){
     int nb_attemps = Integer.parseInt(current_week[2]);
     String gym = current_week[3];
     
-    DataRow data_row_current_week = new DataRow(week, grade, nb_attemps, gym);
+    //?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+    DataRow data_row_current_week = new DataRow(week, grade, nb_attemps, gym);  
     data.add(data_row_current_week);
   }
   data.sort(Comparator.comparing(DataRow::get_week).thenComparing(Comparator.comparing(DataRow::get_grade).reversed()).thenComparing(DataRow::get_nb_attempts));
@@ -338,6 +352,7 @@ class DataRow {
     this.grade = grade;
     this.nb_attempts = nb_attempts; 
     this.gym = gym;
+   
   }
   int get_week(){
     return this.week;
@@ -350,6 +365,13 @@ class DataRow {
   int get_nb_attempts(){
     return this.nb_attempts;
   }
+  
+  int get_angle(){
+     float r = random(1,361);
+    int angle = int(r);
+    return angle;
+  }
+    
   
   @Override
    public String toString() {
@@ -365,13 +387,15 @@ class HoldsSpecs {
   int y_position; 
   int colour;
   int chalk_amount;
+  float angle;
   
-  HoldsSpecs(int type_hold, int x_position, int y_position, int colour, int chalk_amount) {
+  HoldsSpecs(int type_hold, int x_position, int y_position, int colour, int chalk_amount, float angle) {
     this.type_hold = type_hold; 
     this.x_position = x_position;
     this.y_position = y_position; 
     this.colour = colour; 
     this.chalk_amount = chalk_amount;
+    this.angle = angle; 
   }
   int get_type_hold(){
     return this.type_hold;
@@ -407,9 +431,14 @@ class HoldsSpecs {
     
   }
   
+  float get_angle(){   
+   return this.angle;
+}
+  
+  
   @Override
    public String toString() {
-        return "(" + type_hold + ", " + x_position + ", " + y_position + ", " + colour + ")" + chalk_amount;
+        return "(" + type_hold + ", " + x_position + ", " + y_position + ", " + colour + "," + chalk_amount +")" ;
    }
     
   
