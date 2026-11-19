@@ -6,14 +6,17 @@ import java.util.Collections;
 color shadow_grey = color(112,114,100);
 color stroke_light_grey = color (195,193,199);
 color wall_grey = color(235,236,240);
-color text = color (70,70,70);
+color text = color (0,0,0);
+color white = color (255,255,255);
 
 
-String week_1 = "Week 1";
-String week_2 = "Week 2";
-String week_3 = "Week 3";
-String week_4 = "Week 4";
-String week_5 = "Week 5";
+String week_1 = "WEEK 1";
+String week_2 = "WEEK 2";
+String week_3 = "WEEK 3";
+String week_4 = "WEEK 4";
+String week_5 = "WEEK 5";
+
+boolean space_key_pressed = false ;
 
 
 
@@ -31,6 +34,7 @@ void setup(){
   fullScreen();
   background(wall_grey);
   
+  
   raw_data_climbs = loadStrings("Dear_data_Sheet.csv");
   
   sort_raw_data(raw_data_climbs);
@@ -46,12 +50,12 @@ void draw(){
   
   draw_background();
   draw_holds(holds_specs);
-  
-  
-  
-  
-  
-  
+  draw_text();
+  space_key_pressed();
+  if (space_key_pressed == false){
+    draw_pop_up(); 
+    }
+
 }
 
 //-------------------------------------------------------setup holds--------------------------------------------
@@ -63,26 +67,43 @@ void setup_holds(ArrayList<DataRow> data) {
   int next_y_week_2 = 1020;
   int next_x_week_3 = 10;
   int next_y_week_3 = 880;
+  int next_x_week_4 = 1100;
+  int next_y_week_4 = 415;
+  int next_x_week_5 = 0;
+  int next_y_week_5 = 280;
+  
+  
   int counter_w_1 = 1;
   int counter_w_2 = 1;
   int counter_w_3 = 1;
+  int counter_w_4 = 1; 
+  int counter_w_5 = 1;
   int current_x_w_1 = 0;
   int current_y_w_1 = 0;
   int current_x_w_2 = 0;
   int current_y_w_2 = 0;
   int current_x_w_3 = 0;
   int current_y_w_3 = 0;
+  int current_x_w_4 = 0;
+  int current_y_w_4 = 0;
+  int current_x_w_5 = 0;
+  int current_y_w_5 = 0;
   int current_grade;
   
   Collections.shuffle(data.subList(0,20));
+  Collections.shuffle(data.subList(20,40));
+  Collections.shuffle(data.subList(40,60));
+  Collections.shuffle(data.subList(60,80));
+  Collections.shuffle(data.subList(80,100));
+  
   
   
   for (int i = 0; i < data.size(); i++){
-    float r = random(1.1,6.9);
-    int type_hold = int(r);
+    int type_hold = int(random(1.1,6.9));
     float angle = random(360);
+    int y_offset = int(random(-30,30));
+    
     if (data.get(i).get_week() == 1) {
-       println("test");
        current_x_w_1 = next_x_week_1;
        current_y_w_1 = next_y_week_1;
     
@@ -102,12 +123,12 @@ void setup_holds(ArrayList<DataRow> data) {
         next_x_week_1 -= 100;
         counter_w_1 += 1;
       }
-      current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      current_grade = data.get(i).get_grade();                             
       if (current_grade == 0) {
         current_grade = 1;
       }
      
-      HoldsSpecs current_hold_w_1 = new HoldsSpecs(type_hold, current_x_w_1, current_y_w_1, current_grade, data.get(i).get_nb_attempts(), angle);
+      HoldsSpecs current_hold_w_1 = new HoldsSpecs(type_hold, current_x_w_1, current_y_w_1 + y_offset, current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_1);
     }
     
@@ -154,12 +175,12 @@ void setup_holds(ArrayList<DataRow> data) {
       counter_w_2 += 1;
     }
       
-      current_grade = data.get(i).get_grade();                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      current_grade = data.get(i).get_grade();               
       if (current_grade == 0) {
         current_grade = 1;
       }
       
-      HoldsSpecs current_hold_w_2 = new HoldsSpecs(type_hold, current_x_w_2, current_y_w_2,current_grade, data.get(i).get_nb_attempts(), angle);
+      HoldsSpecs current_hold_w_2 = new HoldsSpecs(type_hold, current_x_w_2, current_y_w_2 + y_offset,current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_2);
       }
       
@@ -191,14 +212,82 @@ void setup_holds(ArrayList<DataRow> data) {
       
       
       
-      current_grade = data.get(i).get_grade();                             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      current_grade = data.get(i).get_grade();                             
       if (current_grade == 0) {
         current_grade = 1;
       }
       
-      HoldsSpecs current_hold_w_3 = new HoldsSpecs(type_hold, current_x_w_3, current_y_w_3, current_grade, data.get(i).get_nb_attempts(), angle);
+      HoldsSpecs current_hold_w_3 = new HoldsSpecs(type_hold, current_x_w_3, current_y_w_3 + y_offset, current_grade, data.get(i).get_nb_attempts(), angle);
       holds_specs.add(current_hold_w_3);
-    }       
+    }      
+    
+    if (data.get(i).get_week() == 4) {
+      current_x_w_4 = next_x_week_4;
+      current_y_w_4 = next_y_week_4;
+      if (counter_w_4 == 5){
+        next_x_week_4 -= 650;
+        next_y_week_4 += 50; 
+        counter_w_4 += 1;
+      }else if (counter_w_4 == 12){
+        next_x_week_4 -= 730;
+        next_y_week_4 += 20;
+        counter_w_4 += 1;
+      }else if (counter_w_4 == 19){
+        next_x_week_4 = 1500;
+        next_y_week_4 = 0;
+        counter_w_4 += 1;
+      }else{
+        next_x_week_4 +=120;
+        next_y_week_4 -= 28;
+        counter_w_4 += 1; 
+      }
+      
+      current_grade = data.get(i).get_grade();                             
+      if (current_grade == 0) {
+        current_grade = 1;
+      }
+      
+      HoldsSpecs current_hold_w_4 = new HoldsSpecs(type_hold, current_x_w_4, current_y_w_4 + y_offset, current_grade, data.get(i).get_nb_attempts(), angle);
+      holds_specs.add(current_hold_w_4);
+    }
+    
+    if (data.get(i).get_week() == 5) {
+      current_x_w_5 = next_x_week_5;
+      current_y_w_5 = next_y_week_5;
+      if (counter_w_5 == 8){
+        next_x_week_5 = -40;
+        next_y_week_5 = 180; 
+        counter_w_5 += 1;
+      }else if (counter_w_5 == 15){
+        next_x_week_5 = -30;
+        next_y_week_5 = 55;
+        counter_w_5 += 1;
+      }else if (counter_w_5 == 19){
+        next_x_week_5 = 0;
+        next_y_week_5 = -30;
+        counter_w_5 += 1;
+      }else if (counter_w_5 < 19 && counter_w_5 > 15){
+        next_x_week_5 +=100;
+        next_y_week_5 -= 20;
+        counter_w_5 += 1; 
+      
+      
+    }else{
+        next_x_week_5 +=100;
+        next_y_week_5 -= 40;
+        counter_w_5 += 1; 
+      }
+      
+      current_grade = data.get(i).get_grade();                             
+      if (current_grade == 0) {
+        current_grade = 1;
+      }
+      
+      HoldsSpecs current_hold_w_5 = new HoldsSpecs(type_hold, current_x_w_5, current_y_w_5 + y_offset, current_grade, data.get(i).get_nb_attempts(), angle);
+      holds_specs.add(current_hold_w_5);
+    }
+    
+    
   }
   
   
@@ -209,9 +298,6 @@ void draw_holds(ArrayList<HoldsSpecs>holds_specs){
  
   // red = 1, green = 2 , yellow = 3, blue = 4, purple = 5 
   // crimp = 1 , jug = 2, pocket = 3, pinch = 4, x = 5, volume = 6 
-  
- 
-  
   
   
   for (int i = 0; i < holds_specs.size(); i++){
@@ -228,17 +314,10 @@ void draw_holds(ArrayList<HoldsSpecs>holds_specs){
     translate(current_x_position + 65, current_y_position + 70);
     rotate(radians(angle));
     imageMode(CENTER);
-    
-    
-    image(img, 0, 0, 100, 100);
+    image(img, 0, 0, 80, 80);
     popMatrix();
-    
-    
-    
   }
 }
-
-
   
 //-------------------------------------------------------sort data------------------------------------------
 void sort_raw_data(String [] raw_data_climbs){
@@ -246,6 +325,8 @@ void sort_raw_data(String [] raw_data_climbs){
   int nb_climbs_week_1 = 0;
   int nb_climbs_week_2 = 0;
   int nb_climbs_week_3 = 0;
+  int nb_climbs_week_4 = 0;
+  int nb_climbs_week_5 = 0; 
   
   for (int i = 1; i < raw_data_climbs.length; i++){
     String[] current_week = split(raw_data_climbs[i], ','); // ----- split the row into elements 
@@ -254,7 +335,7 @@ void sort_raw_data(String [] raw_data_climbs){
     int nb_attemps = Integer.parseInt(current_week[2]);
     String gym = current_week[3];
     
-    //?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+  
     DataRow data_row_current_week = new DataRow(week, grade, nb_attemps, gym);  
     data.add(data_row_current_week);
   }
@@ -285,15 +366,29 @@ void sort_raw_data(String [] raw_data_climbs){
         i -= 1;
       }
     }
+    if (data.get(i).get_week() == 4) {
+     nb_climbs_week_4 += 1;
+     if (nb_climbs_week_4 > 20){
+       data.remove(i);
+       i -= 1;
+     }
+   }
+   if (data.get(i).get_week() == 5) {
+     nb_climbs_week_5 += 1;
+     if (nb_climbs_week_5 > 20){
+       data.remove(i);
+       i -= 1;
+      }
+    }
   }
-      
- println(data);    
-      
-    
 }
 
 //---------------------------------------------draw background function---------------------------------------
 void draw_background(){
+  
+  fill(white);
+  stroke(white);
+  rect(0,0,3000,3000);
    //-----dark portions volumes on wall -------
   fill(shadow_grey);
   stroke(shadow_grey);
@@ -302,10 +397,10 @@ void draw_background(){
   triangle(0,0,0,450,1100,0);
   
   //top right volume 
-  quad(802,402,1120,540,2000,350,2000,100);
+  quad(802,402,1120,570,2000,370,2000,100);
   
   //bottom left volume
-  quad(1095,664, 950, 840,0, 1050, 0, 900);
+  quad(1001,663, 950, 840,0, 1050, 0, 900);
   
   //---light portions volumes on wall-----------
   
@@ -315,29 +410,39 @@ void draw_background(){
   strokeWeight(3);
   
   //top right volume
-  quad(1700,-10,1000,200,800,400,2000,100);
+  quad(1650,-20,1000,200,800,400,2000,100);
   
   //bottom left volume
-  quad(0,650,600,450,1100,660,0,900);
+  quad(0,650,600,450,1000,660,0,900);
   
   //bottom right volume 
   triangle(650,1115,1800,600, 2000,1700);
-  
-  //-----------------text------------------------------
+}
+//---------------------------------------------------------------draw text function--------------------------------------------------
+
+void draw_text(){
   fill(text);
-  textSize(25);
-  text(week_1,1370,1100);
+  textSize(30);
+  text(week_1,1320,840);
   text(week_2, 300, 1100);
-  text(week_3, 25 , 830);
-  text(week_4, 1500, 170);
-  text(week_5, 25, 40);
+  text(week_3, 630 , 600);
+  text(week_4, 1500, 200);
+  text(week_5, 150, 40);
 }
 
+//------------------------------------------------------draw pop_up------------------------------------------------------------
+void draw_pop_up(){
+  PImage pop_up = loadImage("pop_up.png");
+  if (space_key_pressed == false){
+    image(pop_up, 845, 550, 950, 950);
+  }
+}
 
-
-
-
-
+void space_key_pressed(){
+  if (keyPressed && key == ' '){
+    space_key_pressed = true;
+  }
+}
 
 //---------------------------------------------DataRow class ----------------------------------
 
@@ -371,13 +476,6 @@ class DataRow {
     int angle = int(r);
     return angle;
   }
-    
-  
-  @Override
-   public String toString() {
-        return "(" + week + ", " + grade + ", " + nb_attempts + ", " + gym + ")";
-   }
-    
 }
 
 //---------------------------------------------HoldsSpecs class ----------------------------------
@@ -433,14 +531,7 @@ class HoldsSpecs {
   
   float get_angle(){   
    return this.angle;
-}
-  
-  
-  @Override
-   public String toString() {
-        return "(" + type_hold + ", " + x_position + ", " + y_position + ", " + colour + "," + chalk_amount +")" ;
-   }
-    
+ }
   
 }
 
